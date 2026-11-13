@@ -39,12 +39,15 @@ Pendiente: registro, detalle de sensor, agregar sensor, historial, ajustes, push
 
 ## Cómo ejecutarlo
 
-1. Levantar el backend: el real (`dotnet run` en SmartGas.Api) o el simulado del repo Android
-   (`node docs/mock/server.js`). Ambos escuchan en el puerto **5048**.
-2. `flutter pub get`
-3. `flutter run` con el emulador de Android abierto.
+1. `flutter pub get`
+2. `flutter run` con el emulador de Android abierto o un celular conectado.
 
-La app apunta a `http://10.0.2.2:5048/api/v1` (`lib/common/api_config.dart`): **10.0.2.2** es la PC vista
-desde el emulador, así que no hace falta `adb reverse`. En un celular real hay que poner la IP de la PC.
+La app apunta al backend desplegado en Render: `https://backend-rxmh.onrender.com/api/v1`
+(`lib/common/api_config.dart`). El plan gratuito de Render apaga el servicio si no se usa, así que la primera
+petición puede tardar unos 50 segundos.
+
+Para usar la API local (`dotnet run` en SmartGas.Api o `node docs/mock/server.js` del repo Android, puerto
+**5048**), cambiar `baseUrl` a `http://10.0.2.2:5048/api/v1`: **10.0.2.2** es la PC vista desde el emulador,
+así que no hace falta `adb reverse`. En un celular real hay que poner la IP de la PC.
 
 Usuario de prueba del mock: `usuario@smartgas.com` / `smartgas`.

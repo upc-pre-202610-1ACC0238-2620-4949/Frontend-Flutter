@@ -6,6 +6,7 @@ import '../../common/session.dart';
 import '../../shared/presentation/widgets.dart';
 import '../data/monitoring_service.dart';
 import '../domain/zone.dart';
+import 'zone_form_page.dart';
 import 'zone_tile.dart';
 
 /// Diseno 05: lista de zonas con filtros All / Safe / Warning / Critical.
@@ -56,6 +57,13 @@ class _ZonesPageState extends State<ZonesPage> {
     }
   }
 
+  Future<void> _createZone() async {
+    final created = await Navigator.push<Zone>(context, MaterialPageRoute(builder: (_) => const ZoneFormPage()));
+    if (created == null || !mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Zona «${created.name}» creada')));
+    _loadData();
+  }
+
   int _count(String status) => _zones.where((z) => z.status.toLowerCase() == status.toLowerCase()).length;
 
   @override
@@ -72,6 +80,11 @@ class _ZonesPageState extends State<ZonesPage> {
       appBar: AppBar(
         title: const Text('Zonas'),
         actions: [IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData)],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _createZone,
+        icon: const Icon(Icons.add),
+        label: const Text('Nueva zona'),
       ),
       body: Column(
         children: [
@@ -111,7 +124,7 @@ class _ZonesPageState extends State<ZonesPage> {
                           padding: const EdgeInsets.all(16),
                           itemCount: visible.length,
                           itemBuilder: (BuildContext context, int i) =>
-                              Padding(padding: const EdgeInsets.only(bottom: 10), child: ZoneTile(visible[i])),
+                              Padding(padding: const EdgeInsets.only(bottom: 10), child: ZoneTile(visible[i], onChanged: _loadData)),
                         ),
                       ),
           ),

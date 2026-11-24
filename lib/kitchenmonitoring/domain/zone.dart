@@ -5,6 +5,7 @@ class Zone {
   final String name;
   final String description;
   final String status;
+  final String sensitivity;
   final double? gasLevel;
   final double? temperature;
   final int sensorCount;
@@ -14,6 +15,7 @@ class Zone {
     required this.name,
     required this.description,
     required this.status,
+    this.sensitivity = 'Medium',
     this.gasLevel,
     this.temperature,
     required this.sensorCount,
@@ -24,6 +26,7 @@ class Zone {
         name: toText(json['name'], 'Zone'),
         description: toText(json['description']),
         status: toText(json['status'], 'Safe'),
+        sensitivity: toText(json['sensitivity'], 'Medium'),
         gasLevel: toDouble(json['gasLevel']),
         temperature: toDouble(json['temperature']),
         sensorCount: toInt(json['sensorCount']),
@@ -34,6 +37,7 @@ class Zone {
         'name': name,
         'description': description,
         'status': status,
+        'sensitivity': sensitivity,
         'gasLevel': gasLevel,
         'temperature': temperature,
         'sensorCount': sensorCount,
@@ -45,6 +49,7 @@ class Zone {
         name: name,
         description: description,
         status: status,
+        sensitivity: sensitivity,
         gasLevel: gas ?? gasLevel,
         temperature: temp ?? temperature,
         sensorCount: sensorCount,

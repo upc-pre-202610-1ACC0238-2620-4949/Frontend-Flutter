@@ -10,7 +10,10 @@ import 'zone_detail_page.dart';
 class ZoneTile extends StatelessWidget {
   final Zone zone;
 
-  const ZoneTile(this.zone, {super.key});
+  /// Se llama al volver del detalle si la zona se edito o elimino.
+  final VoidCallback? onChanged;
+
+  const ZoneTile(this.zone, {this.onChanged, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,10 @@ class ZoneTile extends StatelessWidget {
         subtitle: readings.isEmpty ? null : Text(readings),
         trailing: StatusPill(zone.status, statusColor(zone.status)),
         // Igual que Navigator.push del ejemplo de contactos: abre el detalle con la zona elegida
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ZoneDetailPage(zone))),
+        onTap: () async {
+          final changed = await Navigator.push<bool>(context, MaterialPageRoute(builder: (_) => ZoneDetailPage(zone)));
+          if (changed == true) onChanged?.call();
+        },
       ),
     );
   }

@@ -20,5 +20,7 @@ class Account {
     );
   }
 
+  Map<String, dynamic> toJson() => {'accountId': id, 'email': email, 'fullName': fullName, 'role': role};
+
   String get firstName => fullName.trim().split(' ').first;
 }

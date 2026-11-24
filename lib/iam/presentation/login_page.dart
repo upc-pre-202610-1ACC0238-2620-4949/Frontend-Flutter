@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../common/api_config.dart';
+import '../../common/local_storage.dart';
 import '../../common/session.dart';
 import '../../shared/presentation/app_theme.dart';
 import '../../shared/presentation/main_shell.dart';
+import '../../shared/presentation/terms_page.dart';
 import '../data/auth_service.dart';
 
 /// Disenos 01 y 02: Sign in (y el error de credenciales).
@@ -22,6 +24,13 @@ class _LoginPageState extends State<LoginPage> {
   bool _showPassword = false;
   bool _loading = false;
   String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    // El ultimo correo usado se guarda en el telefono
+    _emailController.text = LocalStorage.lastEmail;
+  }
 
   @override
   void dispose() {
@@ -45,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      Session.currentAccount = await _service.signIn(email, password);
+      await Session.signIn(await _service.signIn(email, password));
       if (!mounted) return;
       // pushReplacement: al volver atras no regresa al login
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainShell()));
@@ -130,10 +139,11 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 24),
-            const Text(
-              'Usuario de prueba (mock): usuario@smartgas.com / smartgas',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.muted, fontSize: 12),
+            Center(
+              child: TextButton(
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TermsPage())),
+                child: const Text('Términos y condiciones'),
+              ),
             ),
           ],
         ),

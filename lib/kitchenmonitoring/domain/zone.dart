@@ -29,6 +29,16 @@ class Zone {
         sensorCount: toInt(json['sensorCount']),
       );
 
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'description': description,
+        'status': status,
+        'gasLevel': gasLevel,
+        'temperature': temperature,
+        'sensorCount': sensorCount,
+      };
+
   /// Copia con la ultima lectura de sus sensores (el backend no siempre actualiza la zona).
   Zone withReading(double? gas, double? temp) => Zone(
         id: id,

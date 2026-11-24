@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'common/local_storage.dart';
+import 'common/session.dart';
 import 'iam/presentation/login_page.dart';
 import 'shared/presentation/app_theme.dart';
+import 'shared/presentation/main_shell.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalStorage.init();
+  Session.restore();
   runApp(const SmartGasApp());
 }
 
@@ -17,7 +23,8 @@ class SmartGasApp extends StatelessWidget {
       title: 'SmartGas',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
-      home: const LoginPage(),
+      // Si hay una sesion guardada en el telefono, entra directo a la app
+      home: Session.isLoggedIn ? const MainShell() : const LoginPage(),
     );
   }
 }

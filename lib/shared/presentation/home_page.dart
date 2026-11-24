@@ -85,8 +85,9 @@ class _HomePageState extends State<HomePage> {
     return 'Buenas noches,';
   }
 
-  void _logout() {
-    Session.clear();
+  Future<void> _logout() async {
+    await Session.clear();
+    if (!mounted) return;
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => const LoginPage()), (_) => false);
   }
 

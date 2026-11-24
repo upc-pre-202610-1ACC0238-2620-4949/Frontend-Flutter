@@ -8,6 +8,7 @@ class Sensor {
   final int? zoneId;
   final String status;
   final double? battery;
+  final String locationDetail;
 
   Sensor({
     required this.id,
@@ -17,6 +18,7 @@ class Sensor {
     this.zoneId,
     required this.status,
     this.battery,
+    this.locationDetail = '',
   });
 
   factory Sensor.fromJson(Map<String, dynamic> json) => Sensor(
@@ -27,6 +29,7 @@ class Sensor {
         zoneId: json['zoneId'] == null ? null : toInt(json['zoneId']),
         status: toText(json['status'], 'Online'),
         battery: toDouble(json['battery'] ?? json['batteryLevel']),
+        locationDetail: toText(json['locationDetail']),
       );
 
   bool get isOnline => status.toLowerCase() != 'offline';

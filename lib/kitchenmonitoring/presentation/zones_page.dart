@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../common/json_utils.dart';
+import '../../common/local_storage.dart';
 import '../../common/session.dart';
 import '../../shared/presentation/widgets.dart';
 import '../data/monitoring_service.dart';
@@ -20,6 +22,7 @@ class _ZonesPageState extends State<ZonesPage> {
   List<Zone> _zones = [];
   String _filter = 'All';
   bool _loading = true;
+  bool _offline = false;
   String? _error;
 
   @override
@@ -35,9 +38,19 @@ class _ZonesPageState extends State<ZonesPage> {
     });
     try {
       final zones = await _service.getZonesWithLatestReading(Session.accountId);
-      setState(() => _zones = zones);
+      await LocalStorage.cacheZones(zones.map((z) => z.toJson()).toList());
+      setState(() {
+        _zones = zones;
+        _offline = false;
+      });
     } catch (_) {
-      setState(() => _error = 'No se pudieron cargar las zonas.');
+      // Sin conexion: se muestran las ultimas zonas guardadas en el telefono
+      final cached = LocalStorage.cachedZones.map(Zone.fromJson).toList();
+      setState(() {
+        _zones = cached;
+        _offline = cached.isNotEmpty;
+        _error = 'No se pudieron cargar las zonas.';
+      });
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -62,6 +75,13 @@ class _ZonesPageState extends State<ZonesPage> {
       ),
       body: Column(
         children: [
+          if (_offline)
+            Container(
+              width: double.infinity,
+              color: const Color(0xFFFFF4E5),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text('Sin conexión · datos guardados del ${formatShortDate(LocalStorage.cachedZonesTime)}'),
+            ),
           SizedBox(
             height: 48,
             child: ListView(

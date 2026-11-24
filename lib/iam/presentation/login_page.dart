@@ -7,6 +7,7 @@ import '../../shared/presentation/app_theme.dart';
 import '../../shared/presentation/main_shell.dart';
 import '../../shared/presentation/terms_page.dart';
 import '../data/auth_service.dart';
+import 'register_page.dart';
 
 /// Disenos 01 y 02: Sign in (y el error de credenciales).
 class LoginPage extends StatefulWidget {
@@ -138,7 +139,16 @@ class _LoginPageState extends State<LoginPage> {
                     : const Text('Iniciar sesión', style: TextStyle(fontSize: 16)),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 56,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(shape: const StadiumBorder()),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RegisterPage())),
+                child: const Text('Crear una cuenta', style: TextStyle(fontSize: 16)),
+              ),
+            ),
+            const SizedBox(height: 12),
             Center(
               child: TextButton(
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TermsPage())),

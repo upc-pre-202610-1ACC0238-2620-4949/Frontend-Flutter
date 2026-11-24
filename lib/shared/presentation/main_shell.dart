@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../iam/presentation/account_page.dart';
 import '../../incidentpreventionnotification/presentation/alerts_page.dart';
 import '../../kitchenmonitoring/presentation/zones_page.dart';
 import 'home_page.dart';
 
-/// Barra inferior del diseno: Home · Zones · Alerts (las otras pestanas quedan para la siguiente entrega).
+/// Barra inferior: Inicio · Zonas · Alertas · Cuenta.
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
 
@@ -21,6 +22,7 @@ class _MainShellState extends State<MainShell> {
       HomePage(onSeeAllZones: () => setState(() => _index = 1)),
       const ZonesPage(),
       const AlertsPage(),
+      const AccountPage(),
     ];
 
     return Scaffold(
@@ -33,6 +35,7 @@ class _MainShellState extends State<MainShell> {
           NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home), label: 'Inicio'),
           NavigationDestination(icon: Icon(Icons.grid_view_outlined), selectedIcon: Icon(Icons.grid_view), label: 'Zonas'),
           NavigationDestination(icon: Icon(Icons.notifications_outlined), selectedIcon: Icon(Icons.notifications), label: 'Alertas'),
+          NavigationDestination(icon: Icon(Icons.person_outline), selectedIcon: Icon(Icons.person), label: 'Cuenta'),
         ],
       ),
     );

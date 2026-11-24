@@ -22,5 +22,10 @@ class Account {
 
   Map<String, dynamic> toJson() => {'accountId': id, 'email': email, 'fullName': fullName, 'role': role};
 
+  bool get isRestaurant => role == 'RestaurantAdministrator';
+
+  /// Segmento del cliente: hogar o restaurante.
+  String get segmentLabel => isRestaurant ? 'Restaurante' : 'Hogar';
+
   String get firstName => fullName.trim().split(' ').first;
 }

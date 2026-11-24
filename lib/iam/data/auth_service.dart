@@ -19,4 +19,35 @@ class AuthService {
     }
     return Account.fromJson(json.decode(response.body) as Map<String, dynamic>);
   }
+
+  /// POST /auth/sign-up. role: HomeOwner (hogar) o RestaurantAdministrator (restaurante).
+  /// 409 = el correo ya esta registrado.
+  Future<Account> signUp({
+    required String fullName,
+    required String email,
+    required String password,
+    required String role,
+    String? businessName,
+    String? phone,
+    String? district,
+  }) async {
+    final response = await http.post(
+      ApiConfig.uri('auth/sign-up'),
+      headers: ApiConfig.jsonHeaders,
+      body: json.encode({
+        'fullName': fullName,
+        'email': email,
+        'password': password,
+        'role': role,
+        'businessName': businessName,
+        'phone': phone,
+        'district': district,
+      }),
+    );
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw ApiException(response.statusCode, response.body);
+    }
+    return Account.fromJson(json.decode(response.body) as Map<String, dynamic>);
+  }
 }
